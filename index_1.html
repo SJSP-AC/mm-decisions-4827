@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Proving Grounds Decision Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style id="pg-style">
+:root{
+  --ground:#F3F2EE; --surface:#FFFFFF; --ink:#16140F; --muted:#67625A; --line:#DEDAD1;
+  --gold:#A87B22; --gold-ink:#7A5714; --gold-wash:#F3E9D2; --chip:#ECEAE4; --ok:#2F6B45; --warn:#8A3B1E;
+  --display:"Big Shoulders Display","Oswald","Arial Narrow",Impact,sans-serif;
+  --body:"Public Sans","Helvetica Neue",Arial,sans-serif;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#12110F; --surface:#1B1A17; --ink:#ECE8DF; --muted:#9C968A; --line:#2E2C27;
+    --gold:#D4A547; --gold-ink:#E5BD6A; --gold-wash:#2E2615; --chip:#262420; --ok:#7FC093; --warn:#E39A7C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#12110F; --surface:#1B1A17; --ink:#ECE8DF; --muted:#9C968A; --line:#2E2C27;
+  --gold:#D4A547; --gold-ink:#E5BD6A; --gold-wash:#2E2615; --chip:#262420; --ok:#7FC093; --warn:#E39A7C;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--gold-ink)}
+.wrap{max-width:780px;margin:0 auto;padding-inline:20px;padding-block:28px 120px}
+@media (max-width:480px){.wrap{padding-inline:16px}}
+
+/* header */
+.eyebrow{font:600 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink)}
+h1{font:800 clamp(40px,8vw,64px)/.92 var(--display);letter-spacing:.01em;text-transform:uppercase;margin:10px 0 14px;text-wrap:balance}
+.lede{max-width:62ch;color:var(--ink);margin:0 0 10px}
+.lede.muted{color:var(--muted)}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:22px 0 8px}
+.how div{background:var(--surface);padding:12px 14px;font-size:13.5px}
+.how b{display:block;font:800 18px/1.1 var(--display);text-transform:uppercase;letter-spacing:.02em;margin-bottom:4px}
+@media (max-width:640px){.how{grid-template-columns:1fr}}
+
+/* sticky bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ground);border-bottom:1px solid var(--line);margin:26px -20px 0;padding:10px 20px}
+@media (max-width:480px){.bar{margin-inline:-16px;padding-inline:16px}}
+.bar-row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.meter{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.meter-track{width:120px;height:6px;background:var(--chip);position:relative}
+.meter-fill{position:absolute;inset:0 auto 0 0;background:var(--gold);width:0}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.seg{display:inline-flex;border:1px solid var(--line);background:var(--surface)}
+.seg button{border:0;background:none;color:var(--muted);font:500 13px var(--body);padding:6px 10px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+.toggle{border:1px solid var(--line);background:var(--surface);color:var(--muted);font:500 13px var(--body);padding:6px 10px;cursor:pointer}
+.toggle[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-ink);background:var(--gold-wash)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-within{outline:2px solid var(--gold);outline-offset:2px}
+
+/* sections */
+.secs{margin-top:22px;border-top:2px solid var(--ink)}
+section.sec{border-bottom:1px solid var(--line)}
+.sec-h{margin:0}
+.sec-toggle{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 2px}
+.sec-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.sec-title{font:800 26px/1 var(--display);text-transform:uppercase;letter-spacing:.02em;color:var(--ink)}
+.sec-right{display:flex;align-items:center;gap:12px;flex:none}
+.chev{width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .15s}
+.sec-toggle[aria-expanded="true"] .chev{transform:rotate(-135deg) translateX(-2px)}
+.sec-body{padding-bottom:18px}
+.sec-toggle:hover .sec-title{color:var(--gold-ink)}
+@media (max-width:480px){.sec-title{font-size:22px}}
+.sec-count{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.sec-intro{color:var(--muted);margin:10px 0 0;max-width:64ch}
+.done-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:0}
+.done-list li{display:grid;grid-template-columns:22px 1fr;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}
+.done-list li:last-child{border-bottom:0}
+.done-mark{color:var(--ok);font-weight:700;line-height:1.5}
+.done-k{display:block;font-weight:600;font-size:15px}
+.done-v{margin:2px 0 0;color:var(--ink);max-width:66ch}
+#sec-confirmed .sec-count{color:var(--ok)}
+
+/* briefing blocks */
+.brief{background:var(--surface);border:1px solid var(--line);padding:16px 18px;margin-top:14px}
+.brief h3{font:800 17px/1.1 var(--display);text-transform:uppercase;letter-spacing:.03em;margin:0 0 8px;color:var(--gold-ink)}
+.brief p{margin:0 0 8px;max-width:66ch}
+.brief ul{margin:6px 0 8px;padding-left:18px}
+.brief li{margin:3px 0}
+.funnel{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:10px 0 12px}
+.funnel div{border-top:3px solid var(--gold);background:var(--ground);padding:8px 10px;font-size:13px}
+.funnel b{display:block;font:800 15px/1.1 var(--display);text-transform:uppercase;letter-spacing:.04em}
+@media (max-width:560px){.funnel{grid-template-columns:1fr 1fr}}
+.tbl{overflow-x:auto;margin:8px 0}
+.tbl table{border-collapse:collapse;width:100%;min-width:520px;font-size:13.5px}
+.tbl th,.tbl td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{font:600 11.5px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tbl tr.rec td{background:var(--gold-wash)}
+.rec-line{border-left:3px solid var(--gold);padding:4px 0 4px 12px;margin:10px 0 0}
+
+/* questions */
+.q{padding:18px 0;border-bottom:1px solid var(--line)}
+.q-top{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px}
+.tag{font:600 11px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;background:var(--chip);color:var(--muted)}
+.tag.need{background:var(--gold-wash);color:var(--gold-ink)}
+.tag.done{background:transparent;color:var(--ok);padding-inline:0}
+.q-text{font-weight:600;font-size:16px;margin:0 0 4px;max-width:66ch;text-wrap:pretty}
+.q-help{color:var(--muted);font-size:13.5px;margin:0 0 10px;max-width:66ch}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.opt{position:relative;display:inline-flex}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt span{border:1px solid var(--line);background:var(--surface);padding:7px 12px;cursor:pointer;font-size:14px;line-height:1.3}
+.opt input:checked + span{border-color:var(--gold);background:var(--gold-wash);color:var(--gold-ink);font-weight:600}
+.opt input:focus-visible + span{outline:2px solid var(--gold);outline-offset:2px}
+textarea,input.note{width:100%;max-width:100%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:14.5px/1.5 var(--body);padding:9px 11px}
+textarea{min-height:74px;resize:vertical}
+input.note{margin-top:6px;font-size:13.5px}
+textarea::placeholder,input.note::placeholder{color:var(--muted)}
+
+/* footer actions */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.dock-row{max-width:780px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.status{font-size:13px;color:var(--muted);flex:1 1 220px}
+.status.good{color:var(--ok)} .status.bad{color:var(--warn)}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:600 14px var(--body);padding:9px 14px;border:1px solid var(--ink);background:var(--ink);color:var(--ground);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.copybox{margin-top:10px}
+.copybox textarea{min-height:180px;font-size:12.5px}
+.signoff{margin-top:36px;color:var(--muted);font-size:13.5px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<main class="wrap" id="pg-root"></main>
+
+<script type="application/json" id="pg-answers">{"answers":{},"savedAt":0}</script>
+
+<script id="pg-app">
+(function(){
+"use strict";
+
+/* ---------- content ---------- */
+var SECTIONS = [
+{ id:"confirmed", title:"Already confirmed",
+  intro:"What we've agreed on so far, kept here as the record. Nothing to answer in this section.",
+  confirmed:[
+  ["Legal business","Coach Marc Montoya, LLC."],
+  ["Tagline","Helping People Perform Under Pressure. We'll keep working on it and let it evolve."],
+  ["Each name has one job","<b>Coach Marc Montoya</b> = who: the business, website, book, speaker. <b>Helping People Perform Under Pressure</b> = what: it goes under Marc's name everywhere. <b>Pressure Performance Coaching™</b> = how: the method, where the 90-day Mission lives. <b>Proving Grounds</b> = where: the Expeditions (group or one-on-one), plus the logo and apparel."],
+  ["What people see","COACH MARC MONTOYA, with Helping People Perform Under Pressure underneath. Proving Grounds is its own section, just for the Expeditions."],
+  ["Proving Grounds keeps working everywhere else","In speaking (every fighter has his own proving grounds), in Marc's own words (\"immersive Proving Grounds experiences\"), and in \"Welcome to the Proving Grounds.\""],
+  ["Why this setup","People search for Marc, not \"proving grounds.\" Proving Grounds gets a real home instead of competing with the other businesses already using the name. And if the Expeditions take off, Proving Grounds can grow into the bigger brand later."],
+  ["Montoya Performance Institute","Skipping it. \"Institute\" sounds like a school, and some states restrict the word in business names. Worth a quick question to your CPA if you still like it."],
+  ["The ™","Fine to use on Pressure Performance Coaching™ now. No registration needed for ™; ® only comes later, if you ever register it."],
+  ["The tagline isn't ownable, and that's OK","\"Performing Under Pressure\" is a common phrase and even a well-known book title, so no one can own it. A tagline's job is to tell a stranger what you do in 10 seconds, and this one does."]
+  ],
+  qs:[]},
+
+{ id:"name", title:"Name & setup",
+  intro:"The name structure is settled (see Already confirmed). A few loose ends to tie off.",
+  qs:[
+  {id:"n3",who:"Both",need:1,type:"choice",q:"Official name is \"Proving Grounds\", without \"The\"?",opts:["Yes, drop \"The\"","No, keep \"The Proving Grounds\""]},
+  {id:"n4",who:"Both",need:0,type:"choice",q:"OK to spend a few hundred dollars on a trademark clearance check before the book or apparel?",opts:["Yes","Not yet","No"]},
+  {id:"n5",who:"Jarah",need:1,type:"text",q:"Which domains and social handles do you already own, and where is coachmarcmontoya.com built and registered?",help:"e.g. Squarespace, GoDaddy. Note whose account each is under (yours or Marc's). No passwords."},
+  {id:"n6",who:"Jarah",need:0,type:"text",q:"Who is your CPA, and have you talked about LLC vs. S-corp for this?"},
+  {id:"n7",who:"Both",need:0,type:"text",q:"Any other tagline ideas you want on the table?",help:"We're keeping Helping People Perform Under Pressure for now and evolving it. Jot down any lines, phrases or words from Marc that feel closer."}
+  ]},
+
+{ id:"money", title:"Money & runway",
+  intro:"This sets the pace of the whole plan. There are no wrong answers here. Ranges are fine.",
+  qs:[
+  {id:"m1",who:"Both",need:1,type:"choice",q:"How long before Proving Grounds needs to be paying the bills?",opts:["Under 6 months","6–12 months","12–24 months","24+ months"]},
+  {id:"m2",who:"Both",need:1,type:"short",q:"Roughly how much monthly income from fighter coaching does this need to replace?",help:"A ballpark is enough."},
+  {id:"m3",who:"Both",need:0,type:"short",q:"What would a good first year look like in revenue?"},
+  {id:"m4",who:"Both",need:1,type:"choice",q:"Budget for outside help to get launched (designer, video editor, tools), separate from Alex's work?",opts:["Under $500","$500–1,500","$1,500–2,500","$2,500–5,000","$5,000–10,000","$10,000+"]},
+  {id:"m5",who:"Both",need:0,type:"choice",q:"Monthly operating budget once it's running (editor, tools, maybe ads)?",help:"Ongoing monthly costs like tools and software, separate from the one-time launch budget above, from content (next question) and from Alex's work.",opts:["Under $500","$500–1,500","$1,500–3,000","$3,000+"]},
+  {id:"m6",who:"Both",need:1,type:"choice",q:"How much per month can go to content for the next 6–12 months?",help:"This covers the creative team: video editing, graphics and sizzle reels. It sets how often new content goes out, so a steady number you can hold for 6–12 months matters more than a big one.",opts:["Under $500","$500–1,000","$1,000–2,500","$2,500–5,000","$5,000+"]}
+  ]},
+
+{ id:"time", title:"Time & calendar",
+  intro:"Marc wants his calendar back. These answers protect it.",
+  qs:[
+  {id:"t1",who:"Marc",need:1,type:"choice",q:"Most one-on-one clients you want at the same time?",opts:["1–3","4–6","7–10","10+"]},
+  {id:"t2",who:"Marc",need:1,type:"choice",q:"Hours a week you want to spend on Proving Grounds in year one (coaching included)?",opts:["Under 10","10–20","20–30","30+"]},
+  {id:"t3",who:"Marc",need:0,type:"choice",q:"How many travel days a month for speaking?",opts:["0–2","3–5","6–8","As many as it takes"]},
+  {id:"t4",who:"Both",need:1,type:"text",q:"Dates and seasons to protect",help:"Wyatt's golf schedule, family trips, hunting season, fight dates."},
+  {id:"t5",who:"Marc",need:1,type:"text",q:"When does fighter coaching realistically end for DJ, Chris and Cody, and when would you like to sell and phase out the gym?",help:"The gym timing matters: the \"this is what I'm doing now\" launch video should be shot on the Factory X mats while that's still yours."}
+  ]},
+
+{ id:"offers", title:"Offers & pricing",
+  intro:"What people can actually buy, and what it costs. First guesses are fine; we'll pressure-test them in the plan.",
+  qs:[
+  {id:"o1",who:"Marc",need:1,type:"short",q:"What do you charge (or want to charge) for a 90-day Mission?"},
+  {id:"o2",who:"Marc",need:1,type:"text",q:"What's included in a 90-day Mission?",help:"How often you meet, session length, in person vs. video, text access between sessions, the Victory Log, the pressure band."},
+  {id:"o3",who:"Marc",need:0,type:"choice",q:"Offer a 6-month option or \"new camp\" after 90 days?",opts:["Yes, from day one","Only for clients who finish 90 days","Not yet"]},
+  {id:"o4",who:"Marc",need:1,type:"text",q:"Speaking fee range",help:"Keynote vs. workshop. Is there a different rate for churches or ministries?"},
+  {id:"o5",who:"Marc",need:0,type:"choice",q:"Expeditions (Proving Grounds): how many group trips a year?",help:"Expeditions are the Proving Grounds: you take a leader or a small team into real pressure (MMA, golf, sporting clays, the backcountry), watch how they respond, and coach it on the spot.",opts:["1–2","3–4","5–6","7+"]},
+  {id:"o5b",who:"Marc",need:0,type:"choice",q:"And how many one-on-one Expeditions a year?",opts:["None","1–2","3–5","6+"]},
+  {id:"o6",who:"Marc",need:0,type:"choice",q:"Team bootcamps for leadership and sales teams: when?",opts:["Now","After one-on-one is running","Not interested"]}
+  ]},
+
+{ id:"audience", title:"Who the site speaks to first",
+  intro:"The homepage can serve everyone, but it has to speak to one person first. Everyone else finds their door one click in.",
+  brief:'<h3>How the funnel works</h3><div class="funnel"><div><b>Discover</b>A clip, a podcast, a friend</div><div><b>Aware</b>"Who is this guy?"</div><div><b>Decide</b>"Is this for me?"</div><div><b>Act</b>Inquire or book</div></div><p>The homepage has seconds to answer: <i>who does he help, what problem, why him, what next.</i> Picking the first person it speaks to sharpens every one of those answers.</p><div class="tbl"><table><thead><tr><th>Who</th><th>Why them</th><th>The catch</th></tr></thead><tbody><tr class="rec"><td><b>Leaders &amp; founders</b></td><td>Highest ability to pay. The 57-year-old CEO client found Marc this way. "The one with all the answers and no corner of his own."</td><td>Needs business-language proof, not fight stories alone</td></tr><tr><td>Athletes</td><td>Closest to Marc\'s 24 years. Easiest to prove.</td><td>Anchors the brand to fighting. Smaller budgets.</td></tr><tr><td>Pastors &amp; ministry leaders</td><td>Faith-first fit. "Carrying everyone\'s problems plus his own."</td><td>Smaller budgets; better as speaking audience</td></tr><tr><td>Men in a hard season</td><td>Truest to the book: "everyone\'s in a fight"</td><td>Hardest to make specific; can read as life coaching</td></tr><tr><td>Teams &amp; organizations</td><td>Biggest checks: speaking, camps, expeditions</td><td>Slow sales cycle; needs proof from 1-1 first</td></tr></tbody></table></div><p class="rec-line"><b>My recommendation: leaders &amp; founders first.</b> They pay the most, the one real inbound client already came from this group, and it keeps the brand from reading as "fight coach." Athletes stay as the origin story. Pastors and teams get their own door one click in.</p>',
+  qs:[
+  {id:"a1",who:"Both",need:1,type:"choice",q:"Who should the homepage speak to first?",help:"This sets who the top of the site is written for: the headline, the first example, the photos, the words used. It isn't who Marc works with. Everyone else still gets their own section one click in. Think of the client you most want more of, and who can most easily pay for a 90-day Mission. If you're torn, pick one and name the runner-up in the note.",opts:["Leaders & founders","Athletes","Pastors & ministry leaders","Men in a hard season","Teams & organizations"]},
+  {id:"a2",who:"Marc",need:0,type:"text",q:"Describe your best client from the last few years",help:"No names. What was their job, their fight, and what changed?"},
+  {id:"a3",who:"Both",need:1,type:"text",q:"Describe your ideal client",help:"The person you most want more of. Their role or season of life, the pressure they're under, what they're fighting, why they'd reach out now, and what makes them a great fit. Also worth saying: who is not a fit."}
+  ]},
+
+{ id:"faith", title:"Where faith sits",
+  intro:"Faith is the foundation either way. The question is how soon a stranger sees it.",
+  brief:'<h3>Three options</h3><ul><li><b>Up front.</b> Stated plainly near the top of the homepage in one line. It filters for the right people from the first second.</li><li><b>One layer in.</b> The homepage leads with pressure and performance; faith shows up in the About and Method sections and in the Corner Talk voice.</li><li><b>Inside the coaching only.</b> Not on the public site; it comes up in sessions.</li></ul><p class="rec-line"><b>What I heard from Marc:</b> "It\'s a green flag, not a red flag. If it\'s a red flag for someone, good, they can go." And: "If faith can\'t be the foundation of my talk, I\'m not your guy." That points to <b>up front</b>, written as an invitation, not a sermon. The trade-off: some corporate speaking buyers will pass.</p>',
+  qs:[
+  {id:"f1",who:"Both",need:1,type:"choice",q:"Where should faith sit on the site?",opts:["Up front","One layer in","Inside the coaching only"]}
+  ]},
+
+{ id:"book", title:"The book",
+  intro:"The first draft of the book is done, which shapes the plan: it will become the anchor for speaking and for credibility beyond the fight game.",
+  qs:[
+  {id:"b1",who:"Marc",need:1,type:"choice",q:"How do you want to publish?",opts:["Traditional publisher","Self-publish and own it","Hybrid publisher","Undecided"],help:"Traditional brings credibility and distribution but usually takes 9–18 months. Self-publishing can be months, not years."},
+  {id:"b2",who:"Marc",need:1,type:"short",q:"Pick the date the book is out. Make it a stretch.",help:"Ignore publishers, printing and every other logistic for now. Name the date you'd want if nothing stood in the way. We'll lock it in and plan backward to make it real."},
+  {id:"b3",who:"Marc",need:0,type:"short",q:"Working title?"},
+  {id:"b4",who:"Marc",need:0,type:"text",q:"Who would you ask to write the foreword?"},
+  {id:"b5",who:"Marc",need:1,type:"choice",q:"OK to use Corner Talk sections and short excerpts in the newsletter and social before the book is out?",help:"How it would work: every so often, one Corner Talk from the book becomes a short newsletter, and a line or two from it becomes a quote graphic or a 30-second clip of Marc reading it. It should feel like a preview, not a giveaway: one lesson in Marc's voice, ending with \"more in the book.\" Over time it builds a list of people waiting for launch day.",opts:["Yes","Some, I'll pick","No, hold it for launch"]}
+  ]},
+
+{ id:"content", title:"Content & voice",
+  intro:"The plan is built around what you'll actually do, not what a marketing book says you should.",
+  qs:[
+  {id:"c1",who:"Marc",need:1,type:"multi",q:"Which of these would you actually do? Pick all that apply.",opts:["Talk to camera","Be interviewed (podcasts)","Write","Talk into my phone and have it written up","Get filmed doing what I do (coaching, hunting, golf)"]},
+  {id:"c2",who:"Marc",need:1,type:"choice",q:"How often could you send a newsletter?",opts:["Weekly","Every two weeks","Monthly","When something happens"]},
+  {id:"c5",who:"Both",need:0,type:"text",q:"Where does existing footage live?",help:"Phones, Google Drive, UFC Embedded, the Onyx podcast, last week's talk. Who has the recording of the talk?"},
+  {id:"c6",who:"Both",need:1,type:"choice",q:"Where should all the footage be collected?",help:"We need to start pulling everything into one place now. Recommended: both. Google Drive is the shared home that editors and Jarah can reach from anywhere, and a hard drive keeps a second copy in case anything is lost. Video takes a lot of space, so plan on a Google storage plan of 4 TB or more.",opts:["Both (recommended)","Google Drive only","Hard drives only"]}
+  ]},
+
+{ id:"jarah", title:"Jarah's role",
+  intro:"Jarah will run the back-end. This makes sure the system is built around what she wants to own.",
+  qs:[
+  {id:"j1",who:"Jarah",need:1,type:"multi",q:"Which of these do you want to own?",opts:["Marc's calendar","Booking travel","Speaking bookings & contracts","Client intake & scheduling","Invoices & working with the CPA","Managing the editorial calendar & posting to social","Sending the newsletter","Managing editors, designers & apparel"]},
+  {id:"j2",who:"Jarah",need:0,type:"text",q:"Anything you definitely don't want to do?"},
+  {id:"j3",who:"Jarah",need:1,type:"choice",q:"Hours a week you can give it?",opts:["Under 5","5–10","10–20","20+","As many as it takes!"]}
+  ]},
+
+{ id:"facts", title:"Facts to confirm",
+  intro:"Small things that end up on the website, the book jacket and every bio. Worth getting exactly right.",
+  qs:[
+  {id:"x1",who:"Marc",need:1,type:"short",q:"Exact number of championship belts",help:"Every belt counts: UFC, boxing, regional."},
+  {id:"x2",who:"Marc",need:1,type:"choice",q:"Coaching since 2000, so \"24 years\"?",opts:["Yes, 24 years","Different number (add a note)"]},
+  {id:"x3",who:"Marc",need:0,type:"short",q:"What does each letter in PRACCE stand for?",help:"So far we have P = Pause, R = Recognize."},
+  {id:"x4",who:"Marc",need:1,type:"text",q:"Who has reached out that we can ask for a testimonial?",help:"Note who has already said yes."},
+  {id:"x5",who:"Marc",need:0,type:"text",q:"Your own Mission Builder: what's most likely to keep this from launching?",help:"Your opponent, in your words."}
+  ]}
+];
+
+/* ---------- state ---------- */
+var embedded = {answers:{},savedAt:0};
+try{ embedded = JSON.parse(document.getElementById("pg-answers").textContent) || embedded; }catch(e){}
+var answers = JSON.parse(JSON.stringify(embedded.answers || {}));
+var DRAFT_KEY = "pg-decisions-draft";
+var restoredAt = 0;
+try{
+  var d = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null");
+  if(d && d.t > (embedded.savedAt||0) && d.answers){ for(var k in d.answers){ answers[k] = d.answers[k]; } restoredAt = d.t; }
+}catch(e){}
+var dirty = false;
+var view = {need:false, open:false};
+var OPEN_KEY = "pg-decisions-open";
+var openSecs = {};
+try{ openSecs = JSON.parse(localStorage.getItem(OPEN_KEY) || "{}") || {}; }catch(e){ openSecs = {}; }
+
+/* ---------- helpers ---------- */
+function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function allQs(){ var out=[]; SECTIONS.forEach(function(s){ s.qs.forEach(function(q){ out.push({s:s,q:q}); }); }); return out; }
+function isAnswered(id){ var a=answers[id]; if(!a) return false; var v=a.v; if(Array.isArray(v)) return v.length>0; return v!=null && String(v).trim()!==""; }
+function get(id){ return answers[id] || (answers[id]={v:"",n:""}); }
+function fmtDate(t){ try{ return new Date(t).toLocaleString([], {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}); }catch(e){ return ""; } }
+
+/* ---------- render (once) ---------- */
+function render(){
+  var h = [];
+  h.push('<div class="eyebrow">Coach Marc Montoya · Proving Grounds</div>');
+  h.push('<h1>Decisions for Marc &amp; Jarah</h1>');
+  h.push('<p class="lede">Before I build the plan, roadmap and pricing, I need your answers on these. Some are big decisions, some are quick facts. Answer what you can; skip what you can\'t. Notes are always welcome.</p>');
+  h.push('<p class="lede muted">Questions marked <b>Needed for the plan</b> are the ones I can\'t build without. The rest help but can wait. — Alex</p>');
+  h.push('<div class="how"><div><b>Answer</b>Tap a section to open it, then tap an option or type. Skip anything and come back to it later.</div><div><b>Do it together</b>Sit down together and answer as a team. One of you types; talk through anything you see differently and add it as a note.</div><div><b>Save &amp; come back</b>Press <i>Save progress</i> anytime, even if you\'ve only answered part of it. Your answers stay put. When you\'re finished, press <i>Submit answers</i> so Alex knows you\'re done.</div></div>');
+
+  h.push('<div class="bar" role="region" aria-label="Progress and filters"><div class="bar-row">');
+  h.push('<div class="meter"><div class="meter-track" aria-hidden="true"><div class="meter-fill" id="pg-fill"></div></div><span id="pg-meter-text"></span></div>');
+  h.push('<div class="filters"><button type="button" class="toggle" id="pg-need" aria-pressed="false">Needed only</button><button type="button" class="toggle" id="pg-open" aria-pressed="false">Unanswered only</button><button type="button" class="toggle" id="pg-all">Expand all</button></div>');
+  h.push('</div></div>');
+
+  h.push('<div class="secs">');
+  SECTIONS.forEach(function(s){
+    var isOpen = !!openSecs[s.id];
+    h.push('<section class="sec" id="sec-'+s.id+'"><h2 class="sec-h"><button type="button" class="sec-toggle" data-sec="'+s.id+'" aria-expanded="'+isOpen+'" aria-controls="body-'+s.id+'"><span class="sec-title">'+esc(s.title)+'</span><span class="sec-right"><span class="sec-count" id="cnt-'+s.id+'"></span><span class="chev" aria-hidden="true"></span></span></button></h2><div class="sec-body" id="body-'+s.id+'"'+(isOpen?'':' hidden')+'>');
+    if(s.intro) h.push('<p class="sec-intro">'+esc(s.intro)+'</p>');
+    if(s.brief) h.push('<div class="brief">'+s.brief+'</div>');
+    if(s.confirmed){
+      h.push('<ul class="done-list">');
+      s.confirmed.forEach(function(c){ h.push('<li><span class="done-mark" aria-hidden="true">✓</span><div><b class="done-k">'+esc(c[0])+'</b><p class="done-v">'+c[1]+'</p></div></li>'); });
+      h.push('</ul>');
+    }
+    s.qs.forEach(function(q){
+      var a = get(q.id);
+      h.push('<div class="q" id="q-'+q.id+'" data-q="'+q.id+'" data-who="'+q.who+'" data-need="'+q.need+'">');
+      h.push('<div class="q-top">'+(q.need?'<span class="tag need">Needed for the plan</span>':'')+'<span class="tag done" id="done-'+q.id+'" hidden>✓ Answered</span></div>');
+      h.push('<p class="q-text" id="lbl-'+q.id+'">'+esc(q.q)+'</p>');
+      if(q.help) h.push('<p class="q-help">'+esc(q.help)+'</p>');
+      if(q.type==="choice"||q.type==="multi"){
+        var multi = q.type==="multi";
+        h.push('<div class="opts" role="'+(multi?"group":"radiogroup")+'" aria-labelledby="lbl-'+q.id+'">');
+        q.opts.forEach(function(o,i){
+          var checked = multi ? (Array.isArray(a.v) && a.v.indexOf(o)>-1) : a.v===o;
+          h.push('<label class="opt"><input type="'+(multi?"checkbox":"radio")+'" name="'+q.id+'" id="'+q.id+'-'+i+'" value="'+esc(o)+'"'+(checked?" checked":"")+'><span>'+esc(o)+'</span></label>');
+        });
+        h.push('</div><input class="note" id="'+q.id+'-note" data-note="'+q.id+'" placeholder="Add a note (optional)" value="'+esc(a.n||"")+'" aria-label="Note for: '+esc(q.q)+'">');
+      } else if(q.type==="short"){
+        h.push('<input class="note" style="font-size:14.5px" id="'+q.id+'-text" data-text="'+q.id+'" value="'+esc(a.v||"")+'" aria-labelledby="lbl-'+q.id+'" placeholder="Your answer">');
+      } else {
+        h.push('<textarea id="'+q.id+'-text" data-text="'+q.id+'" aria-labelledby="lbl-'+q.id+'" placeholder="Your answer">'+esc(a.v||"")+'</textarea>');
+      }
+      h.push('</div>');
+    });
+    h.push('</div></section>');
+  });
+  h.push('</div>');
+  h.push('<p class="signoff">Thank you both. Once these are in, I\'ll turn them into the roadmap, the decision points and pricing for each phase.</p>');
+  h.push('<div class="copybox" id="pg-copybox" hidden><p class="q-help">Copy everything below and text or email it to Alex.</p><textarea id="pg-copytext" readonly></textarea></div>');
+  document.getElementById("pg-root").innerHTML = h.join("");
+
+  var dock = document.createElement("div");
+  dock.className = "dock";
+  dock.innerHTML = '<div class="dock-row"><div class="status" id="pg-status" role="status" aria-live="polite"></div><div class="actions"><button type="button" class="btn ghost" id="pg-copy" hidden>Copy answers</button><button type="button" class="btn ghost" id="pg-save">Save progress</button><button type="button" class="btn" id="pg-submit">Submit answers</button></div></div>';
+  document.body.appendChild(dock);
+}
+
+/* ---------- updates ---------- */
+function refresh(){
+  var qs = allQs(), done=0, needAll=0, needDone=0;
+  qs.forEach(function(x){
+    var ok = isAnswered(x.q.id);
+    if(ok) done++;
+    if(x.q.need){ needAll++; if(ok) needDone++; }
+    var el = document.getElementById("done-"+x.q.id); if(el) el.hidden = !ok;
+    var row = document.getElementById("q-"+x.q.id);
+    if(row){
+      var show = (!view.need || x.q.need) && (!view.open || !ok);
+      row.hidden = !show;
+    }
+  });
+  SECTIONS.forEach(function(s){
+    var n=0,t=0,vis=0; s.qs.forEach(function(q){ t++; if(isAnswered(q.id)) n++; var r=document.getElementById("q-"+q.id); if(r && !r.hidden) vis++; });
+    if(s.confirmed){
+      document.getElementById("cnt-"+s.id).textContent = s.confirmed.length+" confirmed";
+      document.getElementById("sec-"+s.id).hidden = view.need || view.open;
+      return;
+    }
+    document.getElementById("cnt-"+s.id).textContent = n+" of "+t+" answered";
+    document.getElementById("sec-"+s.id).hidden = vis===0;
+  });
+  document.getElementById("pg-fill").style.width = (qs.length? (done/qs.length*100):0)+"%";
+  document.getElementById("pg-meter-text").textContent = done+" of "+qs.length+" answered · "+needDone+" of "+needAll+" needed";
+}
+
+function saveDraft(){
+  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify({t:Date.now(), answers:answers})); }catch(e){}
+  if(typeof lastSentSig==="string" && JSON.stringify(answers)===lastSentSig) return;
+  dirty = true;
+  setStatus("Saved on this device. Press Save progress to send your answers to Alex.");
+}
+function setStatus(msg, kind){ var s=document.getElementById("pg-status"); s.textContent=msg; s.className="status"+(kind?" "+kind:""); }
+
+function setOpen(id, on){
+  openSecs[id] = !!on;
+  var b = document.querySelector('.sec-toggle[data-sec="'+id+'"]');
+  if(b) b.setAttribute("aria-expanded", String(!!on));
+  var body = document.getElementById("body-"+id); if(body) body.hidden = !on;
+}
+function syncAllBtn(){
+  var all = SECTIONS.every(function(s){ return openSecs[s.id]; });
+  var b = document.getElementById("pg-all"); if(b) b.textContent = all ? "Collapse all" : "Expand all";
+}
+function saveOpen(){ try{ localStorage.setItem(OPEN_KEY, JSON.stringify(openSecs)); }catch(e){} }
+function wire(){
+  document.querySelectorAll(".sec-toggle").forEach(function(b){
+    b.addEventListener("click", function(){ setOpen(b.dataset.sec, !openSecs[b.dataset.sec]); syncAllBtn(); saveOpen(); });
+  });
+  document.getElementById("pg-all").addEventListener("click", function(){
+    var all = SECTIONS.every(function(s){ return openSecs[s.id]; });
+    SECTIONS.forEach(function(s){ setOpen(s.id, !all); }); syncAllBtn(); saveOpen();
+  });
+  var root = document.getElementById("pg-root");
+  root.addEventListener("change", function(e){
+    var t = e.target;
+    if(t.type==="radio"){ get(t.name).v = t.value; }
+    else if(t.type==="checkbox"){ var a=get(t.name); var arr=Array.isArray(a.v)?a.v.slice():[]; var i=arr.indexOf(t.value); if(t.checked&&i<0) arr.push(t.value); if(!t.checked&&i>-1) arr.splice(i,1); a.v=arr; }
+    else return;
+    saveDraft(); refresh();
+  });
+  var typing;
+  root.addEventListener("input", function(e){
+    var t=e.target;
+    if(t.dataset.note){ get(t.dataset.note).n = t.value; }
+    else if(t.dataset.text){ get(t.dataset.text).v = t.value; }
+    else return;
+    clearTimeout(typing); typing=setTimeout(function(){ saveDraft(); refresh(); }, 400);
+  });
+  ["need","open"].forEach(function(k){
+    var b=document.getElementById("pg-"+k);
+    b.addEventListener("click", function(){ view[k]=!view[k]; b.setAttribute("aria-pressed", String(view[k])); refresh(); });
+  });
+  document.getElementById("pg-copy").addEventListener("click", copyAnswers);
+  document.getElementById("pg-save").addEventListener("click", saveToPage);
+  document.getElementById("pg-submit").addEventListener("click", submitAnswers);
+}
+
+/* ---------- copy ---------- */
+function summary(){
+  var lines=["PROVING GROUNDS — ANSWERS FROM MARC & JARAH","("+new Date().toLocaleDateString()+")",""];
+  SECTIONS.forEach(function(s){
+    var block=[];
+    s.qs.forEach(function(q){
+      var a=answers[q.id]; if(!a) return;
+      var v=Array.isArray(a.v)?a.v.join(", "):(a.v||"");
+      if(!String(v).trim() && !String(a.n||"").trim()) return;
+      block.push("Q: "+q.q); if(String(v).trim()) block.push("A: "+v); if(String(a.n||"").trim()) block.push("Note: "+a.n); block.push("");
+    });
+    if(block.length){ lines.push("== "+s.title.toUpperCase()+" =="); lines = lines.concat(block); }
+  });
+  return lines.join("\n");
+}
+function copyAnswers(){
+  var text = summary();
+  var box=document.getElementById("pg-copybox"), ta=document.getElementById("pg-copytext");
+  ta.value=text;
+  var fallback=function(){ box.hidden=false; ta.focus(); ta.select(); setStatus("Your answers are in the box at the bottom. Select all, copy, and send them to Alex."); box.scrollIntoView({block:"center"}); };
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ setStatus("Copied. Paste it into a text or email to Alex.","good"); }, fallback);
+    } else fallback();
+  }catch(e){ fallback(); }
+}
+
+/* ---------- save to Airtable ---------- */
+var HOOK = "https://hooks.airtable.com/workflows/v1/genericWebhook/app4p3M3dzNu8DCqS/wflxSlV1d1eiUyQBo/wtr05XFjOIggYV2qe";
+var KEY_STORE = "pg-key", DEVICE_STORE = "pg-device", SENT_STORE = "pg-sent";
+function getKey(){
+  var m = /[#&]k=([A-Za-z0-9]+)/.exec(location.hash||"");
+  if(m){ try{ localStorage.setItem(KEY_STORE, m[1]); }catch(e){} return m[1]; }
+  try{ return localStorage.getItem(KEY_STORE) || ""; }catch(e){ return ""; }
+}
+function getDevice(){
+  var d=""; try{ d = localStorage.getItem(DEVICE_STORE) || ""; }catch(e){}
+  if(!d){ d = Math.random().toString(36).slice(2,10); try{ localStorage.setItem(DEVICE_STORE, d); }catch(e){} }
+  return d;
+}
+function payload(status){
+  var qs = allQs(), n=0, need=0;
+  var p = new URLSearchParams();
+  qs.forEach(function(x){
+    var q=x.q, a=answers[q.id]||{}, v=Array.isArray(a.v)?a.v.join(", "):(a.v==null?"":String(a.v));
+    var txt = v.trim(); if(String(a.n||"").trim()) txt += (txt?"\n":"") + "Note: " + a.n;
+    if(isAnswered(q.id)){ n++; if(q.need) need++; }
+    p.append(q.id, txt);
+  });
+  var now = new Date();
+  p.append("status", status||"In progress");
+  p.append("save", (status==="Submitted"?"SUBMITTED ":"Save ") + now.toLocaleString([], {month:"short",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit"}) + " · " + n + " answered");
+  p.append("savedAt", now.toISOString());
+  p.append("answered", String(n));
+  p.append("needed", String(need));
+  p.append("device", getDevice());
+  p.append("passcode", getKey());
+  p.append("json", JSON.stringify(answers));
+  return {body:p, n:n};
+}
+var saving=false, lastSentSig="";
+try{ lastSentSig = localStorage.getItem(SENT_STORE) || ""; }catch(e){}
+function sendAnswers(opts){
+  opts = opts || {};
+  var sig = JSON.stringify(answers);
+  if(opts.quiet && sig === lastSentSig) return Promise.resolve();
+  var status = opts.status || "In progress";
+  try{ localStorage.setItem(DRAFT_KEY, JSON.stringify({t:Date.now(), answers:answers})); }catch(e){}
+  if(!getKey()){
+    if(!opts.quiet){ showCopy(); setStatus("Saved on this device. This link is missing its key, so answers can't reach Alex. Open the exact link Alex sent, or press Copy answers and text them to him.","bad"); }
+    return Promise.resolve();
+  }
+  var pl = payload(status);
+  return fetch(HOOK, {method:"POST", mode:"no-cors", keepalive:!!opts.quiet, body:pl.body}).then(function(){
+    lastSentSig = sig; dirty = false;
+    try{ localStorage.setItem(SENT_STORE, sig); }catch(e){}
+    if(status==="Submitted"){ try{ localStorage.setItem("pg-submitted", String(Date.now())); }catch(e){} setStatus("Submitted. Thank you! Alex has your "+pl.n+" answer"+(pl.n===1?"":"s")+". If you change anything, just press Submit answers again.","good"); return; }
+    if(!opts.quiet) setStatus("Progress saved: "+pl.n+" answer"+(pl.n===1?"":"s")+" at "+fmtDate(Date.now())+". Alex has them. Close anytime; on this device you'll pick up right here.","good");
+  });
+}
+function saveToPage(){
+  if(saving) return;
+  saving = true;
+  var btn=document.getElementById("pg-save"); btn.disabled=true; setStatus("Saving…");
+  sendAnswers().then(function(){ saving=false; btn.disabled=false; }, function(){
+    saving=false; btn.disabled=false; showCopy();
+    setStatus("Couldn't reach Alex right now (check your connection). Your answers are safe on this device. Try again, or press Copy answers.","bad");
+  });
+}
+var confirmSubmit=false;
+function submitAnswers(){
+  if(saving) return;
+  var blanks = allQs().filter(function(x){ return x.q.need && !isAnswered(x.q.id); }).length;
+  var sb=document.getElementById("pg-submit");
+  if(blanks && !confirmSubmit){
+    confirmSubmit=true; sb.textContent="Submit anyway";
+    setStatus(blanks+" question"+(blanks===1?" marked Needed for the plan is":"s marked Needed for the plan are")+" still blank. Fill them in, or press Submit anyway and we'll talk them through.","bad");
+    return;
+  }
+  confirmSubmit=false; sb.textContent="Submit answers";
+  saving=true; sb.disabled=true; setStatus("Submitting…");
+  sendAnswers({status:"Submitted"}).then(function(){ saving=false; sb.disabled=false; }, function(){
+    saving=false; sb.disabled=false; showCopy();
+    setStatus("Couldn't reach Alex right now (check your connection). Your answers are safe on this device. Try again, or press Copy answers.","bad");
+  });
+}
+document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden" && dirty){ try{ sendAnswers({quiet:true}); }catch(e){} } });
+function showCopy(){ var b=document.getElementById("pg-copy"); if(b) b.hidden=false; }
+
+/* ---------- boot ---------- */
+render(); wire(); refresh(); syncAllBtn();
+var answeredCount = allQs().filter(function(x){ return isAnswered(x.q.id); }).length;
+var submittedAt=0; try{ submittedAt=+localStorage.getItem("pg-submitted")||0; }catch(e){}
+if(submittedAt){ setStatus("You submitted on "+fmtDate(submittedAt)+". You can still change answers; press Submit answers again when you do.","good"); }
+else if(restoredAt && answeredCount){ setStatus("Welcome back. Your "+answeredCount+" saved answer"+(answeredCount===1?"":"s")+" from "+fmtDate(restoredAt)+" are right where you left them.","good"); }
+else if(embedded.savedAt){ setStatus("Last saved "+fmtDate(embedded.savedAt)+"."); }
+else { setStatus("Answer as much or as little as you like. Press Save progress anytime."); }
+})();
+</script>
+
+</body>
+</html>
